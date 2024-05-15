@@ -11,6 +11,7 @@ import load from '../src/load.js'
 import entry from '../src/index.js'
 import find from '../src/find.js'
 import os from 'os'
+import removeRootPath from '../src/removeRootPath.js'
 
 describe('Config', () => {
   const root = `${os.tmpdir()}/sumor-cloud-app-test/config`
@@ -20,6 +21,17 @@ describe('Config', () => {
   })
   afterEach(async () => {
     await fse.remove(root)
+  })
+  it('remove root path', () => {
+    const rootPath = '/tmp/sumor-cloud-app-test/config'
+    const filePath = '/tmp/sumor-cloud-app-test/config/demo/car.entity.json'
+    const result = removeRootPath(rootPath, filePath)
+    expect(result).toBe('demo/car.entity.json')
+
+    const windowsRootPath = 'C:\\tmp\\sumor-cloud-app-test\\config'
+    const windowsFilePath = 'C:\\tmp\\sumor-cloud-app-test\\config\\demo\\car.entity.json'
+    const windowsResult = removeRootPath(windowsRootPath, windowsFilePath)
+    expect(windowsResult).toBe('demo/car.entity.json')
   })
   it('load config files', async () => {
     // The loading order should be: yml > yaml > json
