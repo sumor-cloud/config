@@ -2,7 +2,20 @@ import load from './load.js'
 import convert from './convert.js'
 import find from './find.js'
 
+const splitFolderAndFileName = (path) => {
+  // consider the case of windows path
+  const paths = path.replace(/\\/g, '/').split('/')
+  const fileName = paths.pop()
+  const folder = paths.join('/')
+  return { folder, fileName }
+}
+
 const loadWithConvert = async (root, name, ext) => {
+  if (!name) {
+    const { folder, fileName } = splitFolderAndFileName(root)
+    name = fileName
+    root = folder
+  }
   const config = await load(root, name)
   await convert(root, name, ext)
   return config

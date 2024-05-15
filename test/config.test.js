@@ -88,8 +88,12 @@ describe('Config', () => {
     await fse.writeFile(`${root}/scope.json`, JSON.stringify({
       type: 'json'
     }))
-    const config = await entry.load(root, 'scope', 'yaml')
-    expect(config).toEqual({
+    const config1 = await entry.load(`${root}/scope`)
+    expect(config1).toEqual({
+      type: 'json'
+    })
+    const config2 = await entry.load(root, 'scope', 'yaml')
+    expect(config2).toEqual({
       type: 'json'
     })
     const yamlConfig = await fse.readFile(`${root}/scope.yml`, 'utf8')
