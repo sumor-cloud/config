@@ -9,7 +9,7 @@ import YAML from 'yaml'
 import convert from '../src/convert.js'
 import load from '../src/load.js'
 import entry from '../src/index.js'
-import find from '../src/find.js'
+import find from '../src/findCategory.js'
 import os from 'os'
 import removeRootPath from '../src/removeRootPath.js'
 
@@ -167,5 +167,38 @@ describe('Config', () => {
 
     const carConfig = await fse.readFile(`${root}/car.entity.yml`, 'utf8')
     expect(carConfig).toBe('name: car\n')
+  })
+  it('find config files from other files with entry', async () => {
+    await fse.writeFile(`${root}/car.vue`, '<template><div>car</div></template>')
+    await fse.writeFile(`${root}/car.json`, JSON.stringify({
+      name: 'car'
+    }))
+    await fse.writeFile(`${root}/ship.js`, 'export default {name: "ship"}')
+    await fse.writeFile(`${root}/ship.yaml`, YAML.stringify({
+      name: 'ship'
+    }))
+    await fse.writeFile(`${root}/train.yaml`, YAML.stringify({
+      name: 'train'
+    }))
+    await fse.ensureDir(`${root}/map`)
+    await fse.writeFile(`${root}/map/china.vue`, '<template><div>china</div></template>')
+    await fse.writeFile(`${root}/map/china.yml`, YAML.stringify({
+      name: 'china'
+    }))
+    const configs = await entry.findReference(root, ['vue', 'js'], 'yaml')
+    expect(configs).toEqual({
+      car: {
+        name: 'car'
+      },
+      ship: {
+        name: 'ship'
+      },
+      'map/china': {
+        name: 'china'
+      }
+    })
+
+    const existsCarConfig = await fse.exists(`${root}/car.yml`)
+    expect(existsCarConfig).toBe(true)
   })
 })

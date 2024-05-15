@@ -69,3 +69,22 @@ const config = await find(process.cwd(), 'entity');
 *   }
 * */
 ```
+
+### Find config files from other files
+such as .vue, .js files, it has same name config file
+
+```javascript
+import { find } from '@sumor/config';
+
+const config = await find(process.cwd(), 'entity', null, ['vue', 'js']);
+// it will load all *.entity.yml or *.entity.json which has same name with *.vue or *.js in root directory
+/*
+* example:
+*   car.entity.yml, bike.entity.json
+*   car.vue, bike.js
+*   {
+*       "car": {...}
+*       "bike": {...}
+*   }
+* */
+```

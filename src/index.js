@@ -1,6 +1,7 @@
 import load from './load.js'
 import convert from './convert.js'
-import find from './find.js'
+import findCategory from './findCategory.js'
+import findReference from './findReference.js'
 
 const splitFolderAndFileName = (path) => {
   // consider the case of windows path
@@ -22,7 +23,7 @@ const loadWithConvert = async (root, name, ext) => {
 }
 
 const findWithConvert = async (root, category, ext) => {
-  const files = await find(root, category)
+  const files = await findCategory(root, category)
   const configs = {}
   for (const file of files) {
     const name = file.replace(new RegExp(`.${category}$`), '')
@@ -31,12 +32,24 @@ const findWithConvert = async (root, category, ext) => {
   return configs
 }
 
+const findReferenceWithConvert = async (root, references, ext) => {
+  const files = await findReference(root, references)
+  const configs = {}
+  for (const file of files) {
+    const name = file.replace(new RegExp(`.${references}$`), '')
+    configs[name] = await loadWithConvert(root, file, ext)
+  }
+  return configs
+}
+
 export {
   loadWithConvert as load,
-  findWithConvert as find
+  findWithConvert as find,
+  findReferenceWithConvert as findReference
 }
 
 export default {
   load: loadWithConvert,
-  find: findWithConvert
+  find: findWithConvert,
+  findReference: findReferenceWithConvert
 }
