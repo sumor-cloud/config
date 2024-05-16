@@ -6,7 +6,7 @@ import { glob } from 'glob'
 import removeRootPath from './removeRootPath.js'
 
 export default async (root, category) => {
-  const files = await glob(`${root}/**/*.${category}.{yml,yaml,json}`)
+  const files = await glob(`**/*.${category}.{yml,yaml,json}`, { cwd: root })
 
   const formatted = files.map(file => {
     // remove root path

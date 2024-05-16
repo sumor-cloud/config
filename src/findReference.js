@@ -8,7 +8,7 @@ import removeRootPath from './removeRootPath.js'
 export default async (root, references) => {
   let result = []
   for (const reference of references) {
-    const files = await glob(`${root}/**/*.${reference}`)
+    const files = await glob(`**/*.${reference}`, { cwd: root })
     for (let file of files) {
       // remove root path
       file = removeRootPath(root, file)
