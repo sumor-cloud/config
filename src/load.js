@@ -21,7 +21,7 @@ export default async (root, name) => {
       result = JSON.parse(data)
     }
   } catch (e) {
-    const filePath = path.normalize(path.join(process.cwd(), 'tmp', 'test', name))
+    const filePath = path.normalize(path.join(root, name))
     console.log(`Failed to parse configuration file ${filePath}.yml`)
   }
   return result

@@ -1,4 +1,6 @@
 # config
+A [Sumor Cloud](https://sumor.cloud) Tool.  
+[More Documentation](https://sumor.cloud)
 Config Loader support yaml and json files. It can load all files in a directory.
 And automatically convert the file to the specified format.
 
@@ -40,6 +42,11 @@ please change the following code in your ```package.json``` file:
     * category: string - category name
     * ext: string - file extension to convert (yml, json)
 
+#### findReference
+    * root: string - root directory
+    * references: array - reference file extension (vue, js)
+    * ext: string - file extension to convert (yml, json)
+
 ### Load config file
 
 ```javascript
@@ -74,9 +81,9 @@ const config = await find(process.cwd(), 'entity');
 such as .vue, .js files, it has same name config file
 
 ```javascript
-import { find } from '@sumor/config';
+import { findReference } from '@sumor/config';
 
-const config = await find(process.cwd(), 'entity', null, ['vue', 'js']);
+const config = await findReference(process.cwd(), ['vue', 'js']);
 // it will load all *.entity.yml or *.entity.json which has same name with *.vue or *.js in root directory
 /*
 * example:
