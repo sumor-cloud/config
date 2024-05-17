@@ -8,7 +8,7 @@ import removeRootPath from './removeRootPath.js'
 export default async (root, category) => {
   const files = await glob(`**/*.${category}.{yml,yaml,json}`, { cwd: root })
 
-  const formatted = files.map((file) => {
+  const formatted = files.map(file => {
     // remove root path
     let result = removeRootPath(root, file)
     // remove file extension

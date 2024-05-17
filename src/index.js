@@ -3,7 +3,7 @@ import convert from './convert.js'
 import findCategory from './findCategory.js'
 import findReference from './findReference.js'
 
-const splitFolderAndFileName = (path) => {
+const splitFolderAndFileName = path => {
   // consider the case of windows path
   const paths = path.replace(/\\/g, '/').split('/')
   const fileName = paths.pop()
