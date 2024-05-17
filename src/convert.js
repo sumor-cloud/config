@@ -10,7 +10,7 @@ export default async (root, name, type) => {
     if (type === 'yaml' || type === 'yml') {
       const yamlConfig = YAML.stringify(config)
       const targetPath = path.normalize(path.join(root, `${name}.yml`))
-      if (!await fse.exists(targetPath)) {
+      if (!(await fse.exists(targetPath))) {
         await fse.writeFile(targetPath, yamlConfig)
         await fse.remove(path.normalize(path.join(root, `${name}.yaml`)))
         await fse.remove(path.normalize(path.join(root, `${name}.json`)))
@@ -18,7 +18,7 @@ export default async (root, name, type) => {
     } else if (type === 'json') {
       const jsonConfig = JSON.stringify(config, null, 4)
       const targetPath = path.normalize(path.join(root, `${name}.json`))
-      if (!await fse.exists(targetPath)) {
+      if (!(await fse.exists(targetPath))) {
         await fse.writeFile(targetPath, jsonConfig)
         await fse.remove(path.normalize(path.join(root, `${name}.yml`)))
         await fse.remove(path.normalize(path.join(root, `${name}.yaml`)))

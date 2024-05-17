@@ -1,8 +1,6 @@
 // port number prefix is 111
 
-import {
-  describe, expect, it, beforeEach, afterEach
-} from '@jest/globals'
+import { describe, expect, it, beforeEach, afterEach } from '@jest/globals'
 import fse from 'fs-extra'
 import YAML from 'yaml'
 
@@ -35,28 +33,40 @@ describe('Config', () => {
   })
   it('load config files', async () => {
     // The loading order should be: yml > yaml > json
-    await fse.writeFile(`${root}/config.json`, JSON.stringify({
-      type: 'json'
-    }))
+    await fse.writeFile(
+      `${root}/config.json`,
+      JSON.stringify({
+        type: 'json'
+      })
+    )
     const config1 = await load(root, 'config')
     expect(config1.type).toBe('json')
 
-    await fse.writeFile(`${root}/config.yaml`, YAML.stringify({
-      type: 'yaml'
-    }))
+    await fse.writeFile(
+      `${root}/config.yaml`,
+      YAML.stringify({
+        type: 'yaml'
+      })
+    )
     const config2 = await load(root, 'config')
     expect(config2.type).toBe('yaml')
 
-    await fse.writeFile(`${root}/config.yml`, YAML.stringify({
-      type: 'yml'
-    }))
+    await fse.writeFile(
+      `${root}/config.yml`,
+      YAML.stringify({
+        type: 'yml'
+      })
+    )
     const config3 = await load(root, 'config')
     expect(config3.type).toBe('yml')
 
     await fse.ensureDir(`${root}/map`)
-    await fse.writeFile(`${root}/map/china.yml`, YAML.stringify({
-      type: 'yml'
-    }))
+    await fse.writeFile(
+      `${root}/map/china.yml`,
+      YAML.stringify({
+        type: 'yml'
+      })
+    )
     const config4 = await load(root, 'map/china')
     expect(config4.type).toBe('yml')
   })
@@ -66,15 +76,24 @@ describe('Config', () => {
     expect(config).toBe(undefined)
   })
   it('convert type', async () => {
-    await fse.writeFile(`${root}/config1.json`, JSON.stringify({
-      type: 'json'
-    }))
-    await fse.writeFile(`${root}/config2.yaml`, JSON.stringify({
-      type: 'yaml'
-    }))
-    await fse.writeFile(`${root}/config3.yaml`, JSON.stringify({
-      type: 'yaml'
-    }))
+    await fse.writeFile(
+      `${root}/config1.json`,
+      JSON.stringify({
+        type: 'json'
+      })
+    )
+    await fse.writeFile(
+      `${root}/config2.yaml`,
+      JSON.stringify({
+        type: 'yaml'
+      })
+    )
+    await fse.writeFile(
+      `${root}/config3.yaml`,
+      JSON.stringify({
+        type: 'yaml'
+      })
+    )
     await convert(root, 'config1', 'json')
     const config1 = await fse.readJson(`${root}/config1.json`)
     expect(config1.type).toBe('json')
@@ -97,9 +116,12 @@ describe('Config', () => {
     expect(existsConfig4).toBe(false)
   })
   it('load scope config with entry', async () => {
-    await fse.writeFile(`${root}/scope.json`, JSON.stringify({
-      type: 'json'
-    }))
+    await fse.writeFile(
+      `${root}/scope.json`,
+      JSON.stringify({
+        type: 'json'
+      })
+    )
     const config1 = await entry.load(`${root}/scope`)
     expect(config1).toEqual({
       type: 'json'
@@ -112,43 +134,62 @@ describe('Config', () => {
     expect(yamlConfig).toBe('type: json\n')
   })
   it('find config files', async () => {
-    await fse.writeFile(`${root}/car.entity.json`, JSON.stringify({
-      name: 'car'
-    }))
-    await fse.writeFile(`${root}/ship.entity.json`, JSON.stringify({
-      name: 'ship'
-    }))
-    await fse.writeFile(`${root}/train.entity.yaml`, YAML.stringify({
-      name: 'train'
-    }))
+    await fse.writeFile(
+      `${root}/car.entity.json`,
+      JSON.stringify({
+        name: 'car'
+      })
+    )
+    await fse.writeFile(
+      `${root}/ship.entity.json`,
+      JSON.stringify({
+        name: 'ship'
+      })
+    )
+    await fse.writeFile(
+      `${root}/train.entity.yaml`,
+      YAML.stringify({
+        name: 'train'
+      })
+    )
     await fse.ensureDir(`${root}/map`)
-    await fse.writeFile(`${root}/map/china.entity.yml`, YAML.stringify({
-      name: 'china'
-    }))
+    await fse.writeFile(
+      `${root}/map/china.entity.yml`,
+      YAML.stringify({
+        name: 'china'
+      })
+    )
     const files = await find(root, 'entity')
-    expect(files).toEqual([
-      'car.entity',
-      'map/china.entity',
-      'ship.entity',
-      'train.entity'
-    ])
+    expect(files).toEqual(['car.entity', 'map/china.entity', 'ship.entity', 'train.entity'])
   })
   it('find config files with entry', async () => {
     const emptyFiles = await entry.find(root, 'entity', 'yaml')
     expect(emptyFiles).toEqual({})
-    await fse.writeFile(`${root}/car.entity.json`, JSON.stringify({
-      name: 'car'
-    }))
-    await fse.writeFile(`${root}/ship.entity.json`, JSON.stringify({
-      name: 'ship'
-    }))
-    await fse.writeFile(`${root}/train.entity.yaml`, YAML.stringify({
-      name: 'train'
-    }))
+    await fse.writeFile(
+      `${root}/car.entity.json`,
+      JSON.stringify({
+        name: 'car'
+      })
+    )
+    await fse.writeFile(
+      `${root}/ship.entity.json`,
+      JSON.stringify({
+        name: 'ship'
+      })
+    )
+    await fse.writeFile(
+      `${root}/train.entity.yaml`,
+      YAML.stringify({
+        name: 'train'
+      })
+    )
     await fse.ensureDir(`${root}/map`)
-    await fse.writeFile(`${root}/map/china.entity.yml`, YAML.stringify({
-      name: 'china'
-    }))
+    await fse.writeFile(
+      `${root}/map/china.entity.yml`,
+      YAML.stringify({
+        name: 'china'
+      })
+    )
     const configs = await entry.find(root, 'entity', 'yaml')
     expect(configs).toEqual({
       car: {
@@ -170,21 +211,33 @@ describe('Config', () => {
   })
   it('find config files from other files with entry', async () => {
     await fse.writeFile(`${root}/car.vue`, '<template><div>car</div></template>')
-    await fse.writeFile(`${root}/car.json`, JSON.stringify({
-      name: 'car'
-    }))
+    await fse.writeFile(
+      `${root}/car.json`,
+      JSON.stringify({
+        name: 'car'
+      })
+    )
     await fse.writeFile(`${root}/ship.js`, 'export default {name: "ship"}')
-    await fse.writeFile(`${root}/ship.yaml`, YAML.stringify({
-      name: 'ship'
-    }))
-    await fse.writeFile(`${root}/train.yaml`, YAML.stringify({
-      name: 'train'
-    }))
+    await fse.writeFile(
+      `${root}/ship.yaml`,
+      YAML.stringify({
+        name: 'ship'
+      })
+    )
+    await fse.writeFile(
+      `${root}/train.yaml`,
+      YAML.stringify({
+        name: 'train'
+      })
+    )
     await fse.ensureDir(`${root}/map`)
     await fse.writeFile(`${root}/map/china.vue`, '<template><div>china</div></template>')
-    await fse.writeFile(`${root}/map/china.yml`, YAML.stringify({
-      name: 'china'
-    }))
+    await fse.writeFile(
+      `${root}/map/china.yml`,
+      YAML.stringify({
+        name: 'china'
+      })
+    )
     const configs = await entry.findReference(root, ['vue', 'js'], 'yaml')
     expect(configs).toEqual({
       car: {
