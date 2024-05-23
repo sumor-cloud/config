@@ -2,6 +2,7 @@ import load from './load.js'
 import convert from './convert.js'
 import findCategory from './findCategory.js'
 import findReference from './findReference.js'
+import fse from 'fs-extra'
 
 const splitFolderAndFileName = path => {
   // consider the case of windows path
@@ -36,8 +37,22 @@ const findReferenceWithConvert = async (root, references, ext) => {
   const files = await findReference(root, references)
   const configs = {}
   for (const file of files) {
-    const name = file.replace(new RegExp(`.${references}$`), '')
-    configs[name] = await loadWithConvert(root, file, ext)
+    configs[file] = await loadWithConvert(root, file, ext)
+  }
+  return configs
+}
+
+const findReferenceDataWithConvert = async (root, references, ext) => {
+  const files = await findReference(root, references)
+  const configs = {}
+  for (const file of files) {
+    configs[file] = await loadWithConvert(root, file, ext)
+    for (const suffix of references) {
+      const path = `${root}/${file}.${suffix}`
+      if (await fse.exists(path)) {
+        configs[file][suffix] = await fse.readFile(path, 'utf-8')
+      }
+    }
   }
   return configs
 }
@@ -45,11 +60,13 @@ const findReferenceWithConvert = async (root, references, ext) => {
 export {
   loadWithConvert as load,
   findWithConvert as find,
-  findReferenceWithConvert as findReference
+  findReferenceWithConvert as findReference,
+  findReferenceDataWithConvert as findReferenceData
 }
 
 export default {
   load: loadWithConvert,
   find: findWithConvert,
-  findReference: findReferenceWithConvert
+  findReference: findReferenceWithConvert,
+  findReferenceData: findReferenceDataWithConvert
 }

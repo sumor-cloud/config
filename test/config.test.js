@@ -252,4 +252,20 @@ describe('Config', () => {
     const existsCarConfig = await fse.exists(`${root}/car.yml`)
     expect(existsCarConfig).toBe(true)
   })
+  it('find config files from other files with entry and data', async () => {
+    await fse.writeFile(`${root}/car.sql`, 'SELECT * FROM car')
+    await fse.writeFile(
+      `${root}/car.json`,
+      JSON.stringify({
+        name: 'car'
+      })
+    )
+    const configs = await entry.findReferenceData(root, ['sql'])
+    expect(configs).toEqual({
+      car: {
+        name: 'car',
+        sql: 'SELECT * FROM car'
+      }
+    })
+  })
 })
