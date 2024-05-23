@@ -260,11 +260,15 @@ describe('Config', () => {
         name: 'car'
       })
     )
+    await fse.writeFile(`${root}/ship.sql`, 'SELECT * FROM ship')
     const configs = await entry.findReferenceData(root, ['sql'])
     expect(configs).toEqual({
       car: {
         name: 'car',
         sql: 'SELECT * FROM car'
+      },
+      ship: {
+        sql: 'SELECT * FROM ship'
       }
     })
   })

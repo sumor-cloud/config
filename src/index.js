@@ -46,7 +46,7 @@ const findReferenceDataWithConvert = async (root, references, ext) => {
   const files = await findReference(root, references)
   const configs = {}
   for (const file of files) {
-    configs[file] = await loadWithConvert(root, file, ext)
+    configs[file] = (await loadWithConvert(root, file, ext)) || {}
     for (const suffix of references) {
       const path = `${root}/${file}.${suffix}`
       if (await fse.exists(path)) {
