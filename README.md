@@ -1,7 +1,7 @@
 # config
 
 A [Sumor Cloud](https://sumor.cloud) Tool.  
-[More Documentation](https://sumor.cloud)
+[More Documentation](https://sumor.cloud/config)
 Config Loader support yaml and json files. It can load all files in a directory.
 And automatically convert the file to the specified format.
 

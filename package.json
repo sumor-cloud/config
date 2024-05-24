@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "sumor-cloud/config",
   "author": "Sumor Cloud Ltd",
-  "homepage": "https://sumor.cloud",
+  "homepage": "https://sumor.cloud/config",
   "type": "module",
   "main": "./src/index.js",
   "exports": "./src/index.js",
@@ -39,6 +39,7 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "autofix": "eslint --fix . && prettier --write . && npm audit fix --force",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testMatch='**/test/**/*.test.js'",
     "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --testMatch='**/test/**/*.test.js'",
     "push-tag": "git push && git push --tags",
