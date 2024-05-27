@@ -35,9 +35,13 @@ please change the following code in your `package.json` file:
 
 ## Usage
 
-### methods
+### entry methods
 
 #### load
+
+```js
+import { load } from '@sumor/config'
+```
 
 - root: string - root directory
 - name: string - file name
@@ -45,15 +49,23 @@ please change the following code in your `package.json` file:
 
 #### find
 
-    * root: string - root directory
-    * category: string - category name
-    * ext: string - file extension to convert (yml, json)
+```js
+import { find } from '@sumor/config'
+```
+
+- root: string - root directory
+- category: string - category name
+- ext: string - file extension to convert (yml, json)
 
 #### findReference
 
-    * root: string - root directory
-    * references: array - reference file extension (vue, js)
-    * ext: string - file extension to convert (yml, json)
+```js
+import { findReference } from '@sumor/config'
+```
+
+- root: string - root directory
+- references: array - reference file extension (vue, js)
+- ext: string - file extension to convert (yml, json)
 
 ### Load config file
 
