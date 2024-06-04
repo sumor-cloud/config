@@ -48,6 +48,6 @@
     "publish-release-minor": "npm version minor && npm run push-tag",
     "publish-release-major": "npm version major && npm run push-tag",
     "prepare": "husky",
-    "check": "eslint --fix . && prettier --write . && npm audit fix --force && npm run coverage"
+    "check": "npm run autofix && npm run coverage"
   }
 }

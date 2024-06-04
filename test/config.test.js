@@ -8,6 +8,7 @@ import entry from '../src/index.js'
 import find from '../src/findCategory.js'
 import os from 'os'
 import removeRootPath from '../src/removeRootPath.js'
+import meta from '../src/meta.js'
 
 describe('Config', () => {
   const root = `${os.tmpdir()}/sumor-cloud-app-test/config`
@@ -39,6 +40,9 @@ describe('Config', () => {
     )
     const config1 = await load(root, 'config')
     expect(config1.type).toBe('json')
+
+    const config1Retry = await load(root + '/config')
+    expect(config1Retry.type).toBe('json')
 
     await fse.writeFile(
       `${root}/config.yaml`,
@@ -269,6 +273,39 @@ describe('Config', () => {
       },
       ship: {
         sql: 'SELECT * FROM ship'
+      }
+    })
+  })
+
+  it('search', async () => {
+    await fse.writeFile(`${root}/car.json`, JSON.stringify({ name: 'car' }))
+    await fse.writeFile(`${root}/car.sql`, 'SELECT * FROM car')
+    await fse.writeFile(`${root}/bike.sql`, 'SELECT * FROM bike')
+    await fse.writeFile(`${root}/ship.js`, 'export default {name: "ship"}')
+    await fse.writeFile(`${root}/plane.yml`, YAML.stringify({ name: 'plane' }))
+
+    const configs = await meta(root, ['sql'], ['js', 'sql'])
+    expect(configs).toEqual({
+      car: {
+        name: 'car',
+        sql: 'SELECT * FROM car'
+      },
+      bike: {
+        sql: 'SELECT * FROM bike'
+      },
+      ship: {},
+      plane: {
+        name: 'plane'
+      }
+    })
+
+    const configs2 = await meta(root)
+    expect(configs2).toEqual({
+      car: {
+        name: 'car'
+      },
+      plane: {
+        name: 'plane'
       }
     })
   })

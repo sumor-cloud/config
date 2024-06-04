@@ -2,6 +2,7 @@ import load from './load.js'
 import convert from './convert.js'
 import findCategory from './findCategory.js'
 import findReference from './findReference.js'
+import meta from './meta.js'
 import fse from 'fs-extra'
 
 const splitFolderAndFileName = path => {
@@ -58,6 +59,7 @@ const findReferenceDataWithConvert = async (root, references, ext) => {
 }
 
 export {
+  meta,
   loadWithConvert as load,
   findWithConvert as find,
   findReferenceWithConvert as findReference,
@@ -65,6 +67,7 @@ export {
 }
 
 export default {
+  meta,
   load: loadWithConvert,
   find: findWithConvert,
   findReference: findReferenceWithConvert,

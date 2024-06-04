@@ -3,9 +3,17 @@ import fse from 'fs-extra'
 import path from 'path'
 
 export default async (root, name) => {
-  const ymlPath = path.normalize(path.join(root, `${name}.yml`))
+  root = path.normalize(root)
+  if (!name) {
+    // get last part of root
+    root = root.replace(/\\/g, '/')
+    const paths = root.split('/')
+    name = paths.pop()
+    root = paths.join('/')
+  }
   let result
   try {
+    const ymlPath = path.normalize(path.join(root, `${name}.yml`))
     if (await fse.exists(ymlPath)) {
       const data = await fse.readFile(ymlPath, 'utf-8')
       result = YAML.parse(data)

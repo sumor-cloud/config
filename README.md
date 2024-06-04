@@ -47,6 +47,48 @@ import { load } from '@sumor/config'
 - name: string - file name
 - ext: string - file extension to convert (yml, json)
 
+#### search
+
+load all files in the directory
+
+- root: string - root directory
+- data suffix: string - object suffix which will be load into config
+- possible suffix: array - object suffix which will be loaded if config missing
+
+```js
+import { meta } from '@sumor/config'
+
+const config = await meta(process.cwd(), ['sql'], ['js', 'sql'])
+
+/*
+Demo directory structure
+- root
+  - car.json
+  - car.sql
+  - ship.js
+  - plane.yml
+*/
+
+// it will load all config files as below
+/*
+{
+  car: {
+    name: 'car',
+    sql: "..."
+  },
+  ship: {
+    name: 'ship'
+    // js file will not load
+  },
+  plane: {
+    name: 'plane'
+  }
+}
+*/
+```
+
+## Legacy methods
+
 #### find
 
 ```js
