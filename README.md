@@ -52,13 +52,12 @@ import { load } from '@sumor/config'
 load all files in the directory
 
 - root: string - root directory
-- data suffix: string - object suffix which will be load into config
-- possible suffix: array - object suffix which will be loaded if config missing
+- suffix: string - object suffix which will be load into config (js will only load path)
 
 ```js
 import { meta } from '@sumor/config'
 
-const config = await meta(process.cwd(), ['sql'], ['js', 'sql'])
+const config = await meta(process.cwd(), ['js', 'sql'])
 
 /*
 Demo directory structure
@@ -78,7 +77,7 @@ Demo directory structure
   },
   ship: {
     name: 'ship'
-    // js file will not load
+    js: '<root>/ship.js'
   },
   plane: {
     name: 'plane'

@@ -18,10 +18,9 @@ const suffixGlob = async (root, suffix) => {
   }
 }
 
-export default async (root, suffix, possible) => {
+export default async (root, suffixes) => {
   const files = await suffixGlob(root, ['yml', 'yaml', 'json'])
-  const dataFiles = await suffixGlob(root, suffix)
-  const possibleFiles = await suffixGlob(root, possible)
+  const dataFiles = await suffixGlob(root, suffixes)
 
   const configs = {}
 
@@ -40,14 +39,10 @@ export default async (root, suffix, possible) => {
       configs[path] = {}
     }
     const suffix = file.split('.').pop()
-    configs[path][suffix] = await fse.readFile(fullPath, 'utf-8')
-  }
-
-  for (const file of possibleFiles) {
-    const relative = removeRootPath(root, file)
-    const path = removeSuffix(relative)
-    if (!configs[path]) {
-      configs[path] = {}
+    if (suffix === 'js') {
+      configs[path][suffix] = fullPath
+    } else {
+      configs[path][suffix] = await fse.readFile(fullPath, 'utf-8')
     }
   }
 

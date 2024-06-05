@@ -284,7 +284,7 @@ describe('Config', () => {
     await fse.writeFile(`${root}/ship.js`, 'export default {name: "ship"}')
     await fse.writeFile(`${root}/plane.yml`, YAML.stringify({ name: 'plane' }))
 
-    const configs = await meta(root, ['sql'], ['js', 'sql'])
+    const configs = await meta(root, ['sql', 'js'])
     expect(configs).toEqual({
       car: {
         name: 'car',
@@ -293,7 +293,9 @@ describe('Config', () => {
       bike: {
         sql: 'SELECT * FROM bike'
       },
-      ship: {},
+      ship: {
+        js: `${root}/ship.js`
+      },
       plane: {
         name: 'plane'
       }
