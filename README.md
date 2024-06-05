@@ -47,7 +47,7 @@ import { load } from '@sumor/config'
 - name: string - file name
 - ext: string - file extension to convert (yml, json)
 
-#### search
+#### meta
 
 load all files in the directory
 
