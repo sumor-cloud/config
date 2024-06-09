@@ -2,8 +2,7 @@
 
 A [Sumor Cloud](https://sumor.cloud) Tool.  
 [More Documentation](https://sumor.cloud/config)
-Config Loader support yaml and json files. It can load all files in a directory.
-And automatically convert the file to the specified format.
+Config Loader support .yml, .yaml, .json and .config.js files. It can load all files in a directory.
 
 [![CI](https://github.com/sumor-cloud/config/actions/workflows/ci.yml/badge.svg)](https://github.com/sumor-cloud/config/actions/workflows/ci.yml)
 [![Test](https://github.com/sumor-cloud/config/actions/workflows/ut.yml/badge.svg)](https://github.com/sumor-cloud/config/actions/workflows/ut.yml)
@@ -45,7 +44,6 @@ import { load } from '@sumor/config'
 
 - root: string - root directory
 - name: string - file name
-- ext: string - file extension to convert (yml, json)
 
 #### meta
 
@@ -87,75 +85,4 @@ Demo directory structure
     name: 'truck'
   }
 */
-```
-
-## Legacy methods
-
-#### find
-
-```js
-import { find } from '@sumor/config'
-```
-
-- root: string - root directory
-- category: string - category name
-- ext: string - file extension to convert (yml, json)
-
-#### findReference
-
-```js
-import { findReference } from '@sumor/config'
-```
-
-- root: string - root directory
-- references: array - reference file extension (vue, js)
-- ext: string - file extension to convert (yml, json)
-
-### Load config file
-
-```javascript
-import { load } from '@sumor/config'
-
-const config1 = await load(process.cwd(), 'demo')
-// it will load demo.yml or demo.json in root directory
-
-const config2 = await load(process.cwd(), 'demo', 'yaml')
-// it will load demo.yml or demo.json in root directory, and convert it to yaml format file
-```
-
-### Find config files
-
-```javascript
-import { find } from '@sumor/config'
-
-const config = await find(process.cwd(), 'entity')
-// it will load all *.entity.yml or *.entity.json in root directory
-/*
- * example:
- *   car.entity.yml, bike.entity.json
- *   {
- *       "car": {...}
- *       "bike": {...}
- *   }
- * */
-```
-
-### Find config files from other files
-
-such as .vue, .js files, it has same name config file
-
-```javascript
-import { findReference } from '@sumor/config'
-
-const config = await findReference(process.cwd(), ['vue', 'js'])
-// it will load all *.entity.yml or *.entity.json which has same name with *.vue or *.js in root directory
-/*
- * example:
- *   car.entity.yml, bike.entity.json
- *   car.vue, bike.js
- *   {
- *       "car": {...}
- *       "bike": {...}
- *   }
- * */
 ```
