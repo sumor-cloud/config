@@ -19,30 +19,42 @@ const suffixGlob = async (root, suffix) => {
 }
 
 export default async (root, suffixes) => {
-  const files = await suffixGlob(root, ['yml', 'yaml', 'json'])
+  const configFiles = await suffixGlob(root, ['yml', 'yaml', 'json', 'config.js'])
   const dataFiles = await suffixGlob(root, suffixes)
 
   const configs = {}
 
-  for (const file of files) {
+  for (const file of configFiles) {
     const relative = removeRootPath(root, file)
-    const path = removeSuffix(relative)
+    let path = removeSuffix(relative)
     const fullPath = root + '/' + file
-    configs[path] = await load(removeSuffix(fullPath))
+    if (file.endsWith('.config.js')) {
+      path = path.replace('.config', '')
+      try {
+        const configResult = await import(fullPath)
+        configs[path] = configResult.default
+      } catch (e) {
+        configs[path] = {}
+      }
+    } else {
+      configs[path] = await load(removeSuffix(fullPath))
+    }
   }
 
   for (const file of dataFiles) {
-    const relative = removeRootPath(root, file)
-    const path = removeSuffix(relative)
-    const fullPath = root + '/' + file
-    if (!configs[path]) {
-      configs[path] = {}
-    }
-    const suffix = file.split('.').pop()
-    if (suffix === 'js') {
-      configs[path][suffix] = fullPath
-    } else {
-      configs[path][suffix] = await fse.readFile(fullPath, 'utf-8')
+    if (!file.endsWith('.config.js')) {
+      const relative = removeRootPath(root, file)
+      const path = removeSuffix(relative)
+      const fullPath = root + '/' + file
+      if (!configs[path]) {
+        configs[path] = {}
+      }
+      const suffix = file.split('.').pop()
+      if (suffix === 'js') {
+        configs[path][suffix] = fullPath
+      } else {
+        configs[path][suffix] = await fse.readFile(fullPath, 'utf-8')
+      }
     }
   }
 

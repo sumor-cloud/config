@@ -15,6 +15,7 @@ describe('Config', () => {
   beforeEach(async () => {
     await fse.remove(root)
     await fse.ensureDir(root)
+    await fse.writeFile(`${os.tmpdir()}/sumor-cloud-app-test/package.json`, '{"type": "module"}')
   })
   afterEach(async () => {
     await fse.remove(root)
@@ -71,6 +72,10 @@ describe('Config', () => {
     )
     const config4 = await load(root, 'map/china')
     expect(config4.type).toBe('yml')
+
+    await fse.writeFile(`${root}/demo.config.js`, 'export default {type: "js"}')
+    const config5 = await load(root, 'demo')
+    expect(config5.type).toBe('js')
   })
   it('load failed', async () => {
     await fse.writeFile(`${root}/dummy.yaml`, '{"type":!@123}')
@@ -283,6 +288,7 @@ describe('Config', () => {
     await fse.writeFile(`${root}/bike.sql`, 'SELECT * FROM bike')
     await fse.writeFile(`${root}/ship.js`, 'export default {name: "ship"}')
     await fse.writeFile(`${root}/plane.yml`, YAML.stringify({ name: 'plane' }))
+    await fse.writeFile(`${root}/truck.config.js`, 'export default {name: "truck"}')
 
     const configs = await meta(root, ['sql', 'js'])
     expect(configs).toEqual({
@@ -298,6 +304,9 @@ describe('Config', () => {
       },
       plane: {
         name: 'plane'
+      },
+      truck: {
+        name: 'truck'
       }
     })
 
@@ -308,6 +317,9 @@ describe('Config', () => {
       },
       plane: {
         name: 'plane'
+      },
+      truck: {
+        name: 'truck'
       }
     })
   })

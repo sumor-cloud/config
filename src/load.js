@@ -28,6 +28,12 @@ export default async (root, name) => {
       const data = await fse.readFile(jsonPath, 'utf-8')
       result = JSON.parse(data)
     }
+
+    const configPath = path.normalize(path.join(root, `${name}.config.js`))
+    if (!result && (await fse.exists(configPath))) {
+      const data = await import(configPath)
+      result = data.default
+    }
   } catch (e) {
     const filePath = path.normalize(path.join(root, name))
     console.log(`Failed to parse configuration file ${filePath}.yml`)

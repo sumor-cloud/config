@@ -66,6 +66,7 @@ Demo directory structure
   - car.sql
   - ship.js
   - plane.yml
+  - truck.config.js
 */
 
 // it will load all config files as below
@@ -81,8 +82,10 @@ Demo directory structure
   },
   plane: {
     name: 'plane'
+  },
+  truck: {
+    name: 'truck'
   }
-}
 */
 ```
 
