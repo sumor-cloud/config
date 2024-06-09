@@ -1,7 +1,7 @@
 {
   "name": "@sumor/config",
   "description": "Config Loader support .yml, .yaml, .json and .config.js files. It can load all files in a directory.",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "license": "MIT",
   "repository": "sumor-cloud/config",
   "author": "Sumor Cloud Ltd",
