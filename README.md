@@ -41,6 +41,9 @@ please change the following code in your `package.json` file:
 
 ```js
 import { load } from '@sumor/config'
+
+const config = await load(process.cwd(), 'config')
+// will load config.yml, config.yaml, config.json, config.config.js
 ```
 
 - root: string - root directory
